@@ -1,7 +1,12 @@
 import Link from 'next/link'
 import { memo } from 'react'
 
-export const Header = memo(function Header() {
+type Props = {
+  isLoggedIn: boolean
+  logout: () => void
+}
+
+export const Header = memo(function Header({ isLoggedIn, logout }: Props) {
   return (
     <header className="flex h-14 min-h-fit items-center justify-between bg-white px-4 shadow-md">
       <h1 className="text-xl font-bold">
@@ -33,14 +38,26 @@ export const Header = memo(function Header() {
               Link
             </Link>
           </li>
-          <li>
-            <Link
-              href="/"
-              className="relative grid h-8 place-content-center rounded px-2 transition before:absolute before:bottom-0 before:right-0 before:left-0 before:block before:h-0.5 before:scale-x-0 before:rounded-full before:bg-current before:transition [@media(any-hover:hover){&:hover}]:before:scale-x-100"
-            >
-              Link
-            </Link>
-          </li>
+          {isLoggedIn ? (
+            <li>
+              <button
+                type="button"
+                className="relative grid h-8 place-content-center rounded px-2 transition before:absolute before:bottom-0 before:right-0 before:left-0 before:block before:h-0.5 before:scale-x-0 before:rounded-full before:bg-current before:transition [@media(any-hover:hover){&:hover}]:before:scale-x-100"
+                onClick={logout}
+              >
+                ログアウト
+              </button>
+            </li>
+          ) : (
+            <li>
+              <Link
+                href="/auth"
+                className="relative grid h-8 place-content-center rounded px-2 transition before:absolute before:bottom-0 before:right-0 before:left-0 before:block before:h-0.5 before:scale-x-0 before:rounded-full before:bg-current before:transition [@media(any-hover:hover){&:hover}]:before:scale-x-100"
+              >
+                ログイン
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

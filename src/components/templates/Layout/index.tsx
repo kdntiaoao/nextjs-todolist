@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { memo, ReactNode } from 'react'
 
 import { HeaderContainer } from '@/components/organisms/containers/HeaderContainer'
+import { useHasMounted } from '@/hooks/useHasMounted'
 
 type Props = {
   title?: string
@@ -14,6 +15,12 @@ export const Layout = memo(function Layout({
   description = 'タスクを整理しましょう！',
   children,
 }: Props) {
+  const hasMounted = useHasMounted()
+
+  if (!hasMounted) {
+    return <></>
+  }
+
   return (
     <>
       <Head>

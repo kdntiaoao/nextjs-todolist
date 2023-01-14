@@ -1,6 +1,8 @@
+import { useRouter } from 'next/router'
 import { memo, useCallback, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useCookies } from 'react-cookie'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -20,6 +22,7 @@ const defaultValues: Inputs = {
 
 export const AuthForm = memo(function AuthForm() {
   const [isLogin, setIsLogin] = useState(true)
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -27,14 +30,7 @@ export const AuthForm = memo(function AuthForm() {
     setError,
     formState: { errors },
   } = useForm<Inputs>({ defaultValues: defaultValues, resolver: zodResolver(schema) })
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    if (!isLogin && data.password !== data.password2) {
-      console.log('error')
-      setError('password', { type: 'custom', message: 'Password is invalid.' })
-    }
-    console.log(data)
-  }
+  const [cookies, setCookie, removeCookie] = useCookies(['accessToken'])
 
   const changeResister = useCallback(() => {
     reset()
@@ -46,7 +42,66 @@ export const AuthForm = memo(function AuthForm() {
     setIsLogin(true)
   }, [reset])
 
-  console.log(errors)
+  const login = useCallback(
+    async (username: string, password: string) => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}/auth/jwt/create`, {
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+          headers: { 'Content-Type': 'application/json' },
+        })
+        if (res.status === 400) {
+          throw 'authentication failed'
+        }
+        if (!res.ok) {
+          throw 'error!!'
+        }
+        const data = await res.json()
+        setCookie('accessToken', data.access, { path: '/' })
+        router.push('/')
+      } catch (error) {
+        setError('username', { type: 'custom', message: 'Login failure.' })
+      }
+    },
+    [router, setCookie, setError]
+  )
+
+  const registerUser = useCallback(
+    async (username: string, password: string) => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}/register/`, {
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+          headers: { 'Content-Type': 'application/json' },
+        })
+        if (res.status === 400) {
+          throw 'authentication failed'
+        }
+        if (!res.ok) {
+          throw 'error!!'
+        }
+        login(username, password)
+      } catch (error) {
+        setError('username', { type: 'custom', message: 'Login failure.' })
+      }
+    },
+    [login, setError]
+  )
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    if (!isLogin && data.password !== data.password2) {
+      setError('password', { type: 'custom', message: 'Password is invalid.' })
+      return
+    }
+    console.log(data)
+    if (isLogin) {
+      login(data.username, data.password)
+    } else {
+      registerUser(data.username, data.password)
+    }
+  }
+
+  console.log(cookies.accessToken)
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
