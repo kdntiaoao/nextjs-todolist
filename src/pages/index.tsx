@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { Suspense } from 'react'
 
+import { AuthForm } from '@/components/molcules/AuthForm'
 import { Layout } from '@/components/templates/Layout'
 
 const Home: NextPage = () => {
@@ -12,9 +12,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        <Suspense>
-          <h1 className="text-lg font-bold text-red-400">Hello, Worild!</h1>
-        </Suspense>
+        <AuthForm />
       </Layout>
     </>
   )
