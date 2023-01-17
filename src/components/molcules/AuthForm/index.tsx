@@ -93,15 +93,12 @@ export const AuthForm = memo(function AuthForm() {
       setError('password', { type: 'custom', message: 'Password is invalid.' })
       return
     }
-    console.log(data)
     if (isLogin) {
       login(data.username, data.password)
     } else {
       registerUser(data.username, data.password)
     }
   }
-
-  console.log(cookies.accessToken)
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

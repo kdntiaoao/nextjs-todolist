@@ -16,26 +16,18 @@ export const Header = memo(function Header({ isLoggedIn, logout }: Props) {
         <ul className="flex items-center gap-2">
           <li>
             <Link
-              href="/"
+              href="/posts"
               className="relative grid h-8 place-content-center rounded px-2 transition before:absolute before:bottom-0 before:right-0 before:left-0 before:block before:h-0.5 before:scale-x-0 before:rounded-full before:bg-current before:transition [@media(any-hover:hover){&:hover}]:before:scale-x-100"
             >
-              Link
+              投稿
             </Link>
           </li>
           <li>
             <Link
-              href="/"
+              href="/tasks"
               className="relative grid h-8 place-content-center rounded px-2 transition before:absolute before:bottom-0 before:right-0 before:left-0 before:block before:h-0.5 before:scale-x-0 before:rounded-full before:bg-current before:transition [@media(any-hover:hover){&:hover}]:before:scale-x-100"
             >
-              Link
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/"
-              className="relative grid h-8 place-content-center rounded px-2 transition before:absolute before:bottom-0 before:right-0 before:left-0 before:block before:h-0.5 before:scale-x-0 before:rounded-full before:bg-current before:transition [@media(any-hover:hover){&:hover}]:before:scale-x-100"
-            >
-              Link
+              タスク
             </Link>
           </li>
           {isLoggedIn ? (
