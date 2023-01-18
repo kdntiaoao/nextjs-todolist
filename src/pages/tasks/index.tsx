@@ -38,9 +38,9 @@ const TasksPage: NextPage = () => {
                 tasks.map((post) => (
                   <li key={post.id} className="block rounded bg-white px-4 py-3 shadow-sm">
                     {post.id}. {post.title}
-                    投稿者：{post.user}
-                    投稿日：{post.created_at}
-                    更新日：{post.updated_at}
+                    <p>投稿者：{post.user}</p>
+                    <p>投稿日：{post.created_at}</p>
+                    <p>更新日：{post.updated_at}</p>
                   </li>
                 ))
               ) : (

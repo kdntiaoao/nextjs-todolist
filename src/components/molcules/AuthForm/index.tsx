@@ -30,7 +30,7 @@ export const AuthForm = memo(function AuthForm() {
     setError,
     formState: { errors },
   } = useForm<Inputs>({ defaultValues: defaultValues, resolver: zodResolver(schema) })
-  const [cookies, setCookie, removeCookie] = useCookies(['accessToken'])
+  const [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken'])
 
   const changeResister = useCallback(() => {
     reset()
@@ -58,6 +58,7 @@ export const AuthForm = memo(function AuthForm() {
         }
         const data = await res.json()
         setCookie('accessToken', data.access, { path: '/' })
+        setCookie('refreshToken', data.refresh, { path: '/' })
         router.push('/')
       } catch (error) {
         setError('username', { type: 'custom', message: 'Login failure.' })
