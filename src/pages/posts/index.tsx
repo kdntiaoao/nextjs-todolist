@@ -1,6 +1,5 @@
 import { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
-import { useCallback } from 'react'
 
 import { ArrowDownRightIcon, ArrowUpRightIcon } from '@heroicons/react/24/solid'
 
@@ -15,8 +14,6 @@ type Props = {
 
 const PostsPage: NextPage<Props> = ({ posts: initialPosts }: Props) => {
   const { posts, isDesc, reverseOrder } = useAllPosts(initialPosts)
-
-  const changePostsOrder = useCallback(() => {}, [])
 
   return (
     <Layout>
