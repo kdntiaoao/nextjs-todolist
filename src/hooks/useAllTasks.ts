@@ -11,6 +11,13 @@ export const useAllTasks = (accessToken: string) => {
     setIsDesc((prev) => !prev)
   }
 
+  const refreshTasks = () => {
+    const order = isDesc ? 'desc' : 'asc'
+    getAllTasksData(accessToken, order).then((tasks) => {
+      setTasks(tasks)
+    })
+  }
+
   useEffect(() => {
     const order = isDesc ? 'desc' : 'asc'
     getAllTasksData(accessToken, order).then((tasks) => {
@@ -18,5 +25,5 @@ export const useAllTasks = (accessToken: string) => {
     })
   }, [accessToken, isDesc])
 
-  return { tasks, isDesc, reverseOrder }
+  return { tasks, isDesc, reverseOrder, refreshTasks }
 }

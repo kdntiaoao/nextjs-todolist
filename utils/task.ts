@@ -8,6 +8,9 @@ export const getAllTasksData = async (accessToken: string, order: 'asc' | 'desc'
       Authorization: `JWT ${accessToken}`,
     },
   })
+  if (!res.ok) {
+    return []
+  }
   const tasks: Task[] = await res.json()
   return tasks
 }
@@ -20,6 +23,9 @@ export const getAllTaskIds = async (accessToken: string) => {
       Authorization: `JWT ${accessToken}`,
     },
   })
+  if (!res.ok) {
+    return []
+  }
   const tasks: Task[] = await res.json()
   const taskIds = tasks.map((post) => post.id.toString())
   return taskIds
